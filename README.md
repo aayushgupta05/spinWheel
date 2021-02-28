@@ -1,5 +1,4 @@
 # Spin Wheel (Assignment)
----
 
 ##  Setting up the Project
 (Make sure you have NodeJS and NPM/YARN installed on your machine)
