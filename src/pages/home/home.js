@@ -21,12 +21,16 @@ class Home extends Component {
     this.state = {
       isConnecting: true,
       isGoogleSheet: false,
-      initialClick: null,
+      initialClick: {
+        x: null,
+        y: null,
+      },
     };
   }
 
   async componentDidMount() {
     try {
+      //initiate Google Sheets API connection
       await doc.useServiceAccountAuth({
         client_email: process.env.REACT_APP_CLIENT_EMAIL,
         private_key: process.env.REACT_APP_PRIVATE_KEY,
@@ -71,17 +75,29 @@ class Home extends Component {
   };
 
   handleMouseDown = (e) => {
-    this.setState({ initialClick: e.clientY });
+    e.stopPropagation();
+    this.setState({ initialClick: {
+      x: e.clientX,
+      y: e.clientY,
+    }});
   };
 
   handleMouseUp = (e) => {
+    e.stopPropagation();
     if (
-      this.state.initialClick !== null &&
-      this.state.initialClick < e.clientY
+      this.state.initialClick.x !== null &&
+      this.state.initialClick.y !== null &&
+      this.state.initialClick.y < e.clientY &&
+      this.state.initialClick.x - e.clientX <= 10
     ) {
       this.props.history.go(0);
     }
-    this.setState({ initialClick: null });
+    this.setState({
+      initialClick: {
+        x: null,
+        y: null,
+      },
+    });
   };
 
   render() {
@@ -111,16 +127,15 @@ class Home extends Component {
         >
           <Row className="center-row">
             <Col>
-              <div className="connection-error-container">
-                {!this.state.isGoogleSheet && (
+              {!this.state.isGoogleSheet && (
+                <div className="connection-error-container">
                   <h6>
                     Some error occurred while connecting to Google Sheets.{" "}
-                    <br />
                     Please refresh the page.
                   </h6>
-                )}
-              </div>
-              <SpinWheel uploadResult={this.uploadResult} />
+                </div>
+              )}
+              <SpinWheel uploadResult={this.uploadResult} history={this.props.history} />
               <ActionCard />
               <h6 className="help-text">
                 Have a question?
