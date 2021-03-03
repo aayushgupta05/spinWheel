@@ -17,6 +17,4 @@ Application to spin a prize-wheel (once for each render to avoid redundant spins
 - Code structured properly into pages and UI components
 - Result data uploaded to Google Sheet (link sent in email)
 - Code deployed to a heroku instance (please refresh the page in case of error if you are accessing the application between 12am to 7am IST since Heroku pushes in into inactive state for that period  (for the rest time, I have set up a cron-job which keeps it active by sending dummy request) and the first request timeouts in that period before the instance is brought up into active state, server is successfully run and connected to Google Sheets API
-
-## Leftover feature
-Rotate the wheel anti-clockwise and increase the power of rotation which is visible in the arrow below the wheel and once you leave it after it crosses the black mark, it rotates with higher power clockwise.
+- Rotate the wheel anti-clockwise and increase the power of rotation which is visible in the arrow below the wheel and once you leave it after it crosses the black mark, it rotates with higher power clockwise.
