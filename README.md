@@ -1,70 +1,22 @@
-# Getting Started with Create React App
+# Spin Wheel (Assignment)
+Application to spin a prize-wheel (once for each render to avoid redundant spins) depending on which the user will get a prize (data for which will be automatically uploaded to Google Sheets).
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+##  Setting up the Project
+(Make sure you have NodeJS and NPM/YARN installed on your machine)
+1. Fork this repository
+2. Clone the forked repository on your local machine using: 
+`git clone https://github.com/<username>/spinWheel.git`. (Replace username with your own username)
+3. Install all the dependencies using `yarn install`.
+4. Create a copy of `example.env` and rename it to `.env`. Then create a Google Sheets API key and fill in details inside `.env` file.
+5. Finally start the application using `yarn start`.
 
-## Available Scripts
+## Features Implemented
+- Design implemented similar to the given prototype except the power of rotation UI component (+ takes a mobile-sized container in the middle if opened on desktop/tablet)
+- Implemented swipe down to refresh anywhere on the screen (for mouse events)
+- Handled loading and error states
+- Code structured properly into pages and UI components
+- Result data uploaded to Google Sheet (link sent in email)
+- Code deployed to a heroku instance (please refresh the page in case of error if you are accessing the application between 12am to 7am IST since Heroku pushes in into inactive state for that period  (for the rest time, I have set up a cron-job which keeps it active by sending dummy request) and the first request timeouts in that period before the instance is brought up into active state, server is successfully run and connected to Google Sheets API
 
-In the project directory, you can run:
-
-### `yarn start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
-
-### `yarn test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `yarn build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## Leftover feature
+Rotate the wheel anti-clockwise and increase the power of rotation which is visible in the arrow below the wheel and once you leave it after it crosses the black mark, it rotates with higher power clockwise.
