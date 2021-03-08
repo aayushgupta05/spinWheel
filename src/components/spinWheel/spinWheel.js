@@ -12,6 +12,7 @@ class SpinWheel extends Component {
     super(props);
     this.state = {
       isSpinned: false,
+      isClockwise: false,
       mouseOnHold: false,
       startAngle: null,
       spin: {
@@ -44,7 +45,7 @@ class SpinWheel extends Component {
       this.state.spinButtonCoordinates.y - e.pageY,
       this.state.spinButtonCoordinates.x - e.pageX
     );
-    const degreeAngle = Math.round(radianAngle * (180 / Math.PI) * -1);
+    const degreeAngle = Math.round(radianAngle * (180 / Math.PI));
     return degreeAngle;
   };
 
@@ -58,25 +59,45 @@ class SpinWheel extends Component {
   };
 
   handleMouseMove = (e) => {
-    const { startAngle, spin } = this.state;
+    const { startAngle, spin, isClockwise } = this.state;
     const { power, relativeAngle } = spin;
     if (this.state.mouseOnHold) {
       const currentAngle = this.calculateAngle(e);
+      const isBothSameSign = (
+        (startAngle >= 0 && currentAngle >= 0) ||
+        (startAngle <= 0 && currentAngle <= 0)
+      ) ? true : false;
       if (this.state.spin.power >= 0 && this.state.spin.power <= 5) {
-        let newRelativeAngle = Math.abs(
-          startAngle - currentAngle
-        );
-        if (startAngle < currentAngle) {
-          //denote anticlockwise movement
-          newRelativeAngle = -newRelativeAngle;
-        } else if (startAngle >= 0 && currentAngle < 0) {
-          //convert to equivalent acute angle
-          newRelativeAngle = -(360 - newRelativeAngle);
+        let newRelativeAngle = Math.abs(startAngle - currentAngle);
+        if (!isClockwise) {
+          if (
+            startAngle > currentAngle &&
+            (isBothSameSign ||
+              (startAngle >= 0 &&
+                currentAngle <= 0 &&
+                !(startAngle > 90 && currentAngle < -90)))
+          ) {
+            //denote anticlockwise movement
+            newRelativeAngle = -newRelativeAngle;
+          } else if (
+            startAngle < currentAngle &&
+            startAngle <= 0 &&
+            currentAngle > 0 &&
+            !(startAngle > -90 && currentAngle < 90)
+          ) {
+            //convert to equivalent acute angle
+            newRelativeAngle = -(360 - newRelativeAngle);
+          } else if (currentAngle !== startAngle){
+            this.setState({
+              isClockwise: true,
+            });
+          }
         }
         if (
           //probihit anticlockwise rotation beyond spin power-bar
-          power !== 5 ||
-          newRelativeAngle > relativeAngle
+          (power !== 5 ||
+          newRelativeAngle > relativeAngle) &&
+          !isClockwise
         ) {
           this.spinner.style.transform = `rotate(${newRelativeAngle - 90}deg)`;
           if (
@@ -116,12 +137,13 @@ class SpinWheel extends Component {
         ],
         {
           easing: "ease-out",
-          duration: 2000,
+          duration: 1000,
           iterations: 1,
         }
       );
       this.spinner.style.transform = `rotate(-90deg)`;
       this.setState({
+        isClockwise: false,
         mouseOnHold: false,
         startAngle: null,
         spin: {
@@ -137,10 +159,9 @@ class SpinWheel extends Component {
     if (isSpinned === false) {
       let finalDegree =
         finalIndex === 0
-          ? 270
-          : finalIndex *
-              (360 / (Number(process.env.REACT_APP_OPTIONS_NUMBER) + 1)) -
-            90;
+        ? 270
+        : finalIndex *
+            (360 / (Number(process.env.REACT_APP_OPTIONS_NUMBER) + 1)) - 90;
       if (finalDegree < 0) {
         finalDegree = 360 + finalDegree;
       }
@@ -152,6 +173,7 @@ class SpinWheel extends Component {
       });
       this.setState({
         isSpinned: true,
+        isClockwise: false,
         mouseOnHold: false,
         startAngle: null,
         spin: {
@@ -159,9 +181,9 @@ class SpinWheel extends Component {
           relativeAngle: null,
         },
       });
-    setTimeout(() => {
-      this.props.history.go(0);
-      }, 6000/spinPower + 1000)
+      setTimeout(() => {
+        this.props.history.go(0);
+        }, 6000/spinPower + 1000)
       this.props.uploadResult(finalIndex);
     }
   };

@@ -46,7 +46,7 @@ const PowerArrowIcon = (props) => (
     {props.isGradient ? (
       <React.Fragment>
         <linearGradient id="gradientFill" x1="0%" y1="0%" x2="100%" y2="0%">
-          {gradientArray(props.spinPower).slice(0, props.spinPower + 1)}
+          {gradientArray(props.spinPower)}
         </linearGradient>
         <path
           fill="url('#gradientFill')"
